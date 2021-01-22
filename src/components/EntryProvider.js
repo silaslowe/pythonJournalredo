@@ -1,61 +1,61 @@
-import React, { useState } from "react";
+import React, { useState } from "react"
 
 /*
     The context is imported and used by individual components
     that need data
 */
-export const EntryContext = React.createContext();
+export const EntryContext = React.createContext()
 
 /*
  This component establishes what data can be used.
  */
-export const EntryProvider = props => {
-  const [entries, setEntries] = useState([]);
+export const EntryProvider = (props) => {
+  const [entries, setEntries] = useState([])
   const [entry, setEntry] = useState({})
 
   const getEntries = () => {
     return fetch("http://localhost:8088/entries")
-      .then(res => res.json())
-      .then(setEntries);
-  };
+      .then((res) => res.json())
+      .then(setEntries)
+  }
 
   const searchEntries = (searchTerm) => {
-    return fetch(`http://localhost:8088/entries?q=${searchTerm}`)
-      .then(res => res.json())
-      .then(setEntries);
-  };
+    return fetch(`http://localhost:8088/entries?search_term=${searchTerm}`)
+      .then((res) => res.json())
+      .then(setEntries)
+  }
 
-  const getEntryById = id => {
+  const getEntryById = (id) => {
     return fetch(`http://localhost:8088/entries/${id}`)
-      .then(res => res.json())
-      .then(setEntry);;
-  };
+      .then((res) => res.json())
+      .then(setEntry)
+  }
 
-  const addEntry = Entry => {
+  const addEntry = (Entry) => {
     return fetch("http://localhost:8088/entries", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(Entry)
-    }).then(getEntries);
-  };
+      body: JSON.stringify(Entry),
+    }).then(getEntries)
+  }
 
-  const deleteEntry = entry => {
+  const deleteEntry = (entry) => {
     return fetch(`http://localhost:8088/entries/${entry.id}`, {
-      method: "DELETE"
-    }).then(getEntries);
-  };
+      method: "DELETE",
+    }).then(getEntries)
+  }
 
-  const updateEntry = entry => {
+  const updateEntry = (entry) => {
     return fetch(`http://localhost:8088/entries/${entry.id}`, {
       method: "PUT",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(entry)
-    }).then(getEntries);
-  };
+      body: JSON.stringify(entry),
+    }).then(getEntries)
+  }
 
   return (
     <EntryContext.Provider
@@ -68,10 +68,10 @@ export const EntryProvider = props => {
         getEntryById,
         entry,
         setEntry,
-        searchEntries
+        searchEntries,
       }}
     >
       {props.children}
     </EntryContext.Provider>
-  );
-};
+  )
+}
